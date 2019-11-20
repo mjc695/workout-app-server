@@ -1,0 +1,25 @@
+{
+  "name": "workout-app",
+  "version": "1.0.0",
+  "description": "workout app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test sepcified\" && exit 1",
+    "start": "node index.js",
+    "seed": "node seed.js",
+    "start:dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "Monferd Collin",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "chalk": "^2.4.2",
+    "compression": "^1.7.4",
+    "express": "^4.17.1",
+    "morgan": "^1.9.1",
+    "pg": "^7.12.1",
+    "sequelize": "^5.21.2",
+    "volleyball": "^1.5.1"
+  }
+}
