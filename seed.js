@@ -1,7 +1,7 @@
 const db = require('./db/db');
 const { green, red } = require('chalk');
 
-const { User, Exercise, Workout, Sets } = require('./db/models');
+const { User, Exercise, Sets } = require('./db/models');
 
 const users = [
   {
@@ -32,6 +32,7 @@ const exercises = [
 
 const aSet = [
   {
+    userId: 1,
     exerciseId: 1,
     weight: 100,
     weightUnit: 'lbs',
@@ -52,7 +53,7 @@ const seed = async () => {
   await User.bulkCreate(users);
   await Exercise.bulkCreate(exercises);
   await Sets.bulkCreate(aSet);
-  // await Workout.bulkCreate(workout);
+  // await workout.bulkCreate(workout);
 
   console.log(green('seeding Successfully completed!'));
   await db.close();

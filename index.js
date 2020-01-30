@@ -3,10 +3,10 @@ const path = require('path');
 const express = require('express');
 const compression = require('compression');
 const volleyball = require('volleyball');
-// const morgan = require('morgan'); required on line 36
+const morgan = require('morgan'); //required on line 39
 const session = require('express-session');
-const SequelizeStore = require('connect-session-sequelize'('session.Store'));
-const sessionstore = new SequelizeStore({ db });
+// const SequelizeStore = require('connect-session-sequelize')('session.Store');
+// const sessionstore = new SequelizeStore({ db });
 const PORT = process.env.PORT || 8080;
 const app = express();
 
@@ -17,26 +17,27 @@ if (process.env.NODE_ENV === 'test') {
   after('close the session store', () => sessionStore.stopExpiringSessions);
 }
 
-if (process.env.NODE_ENV !== production) require('../secrets');
+if (process.env.NODE_ENV !== 'production') require('./secrets.js');
 
 //passport serialization
-passport.seralizeUser((user, done) => done(null, user.id));
 
-passport.deseralizeUser(async (id, done) => {
-  try {
-    const user = await db.models.user.findById(id);
-    done(null, user);
-  } catch (err) {
-    done(err);
-  }
-});
+// passport.seralizeUser((user, done) => done(null, user.id));
+
+// passport.deseralizeUser(async (id, done) => {
+//   try {
+//     const user = await db.models.user.findById(id);
+//     done(null, user);
+//   } catch (err) {
+//     done(err);
+//   }
+// });
 
 // creating the server
 
 const createApp = () => {
   //logging middleware
-  app.use(require(morgan('dev')));
-  app.use(require);
+  // app.use(require(morgan('dev')));
+  // app.use(require);
 
   //body parsing middleware
 
@@ -48,19 +49,19 @@ const createApp = () => {
   app.use(compression());
 
   // session middleware with passport
-  app.use(
-    session({
-      secret: process.env.SESSION_SECRET || 'default',
-      store: session.store,
-      resave: false,
-      saveUninitialized: false,
-    })
-  );
-  app.use(passport.initialize());
-  app.use(passport.session());
+  // app.use(
+  //   session({
+  //     secret: process.env.SESSION_SECRET || 'default',
+  //     store: session.store,
+  //     resave: false,
+  //     saveUninitialized: false,
+  //   })
+  // );
+  // app.use(passport.initialize());
+  // app.use(passport.session());
 
   // auth and api routes
-  app.use('/auth', require('./auth'));
+  // app.use('/auth', require('./auth'));
   app.use('/api', require('./api'));
 
   // static file-serving middlware
@@ -80,19 +81,19 @@ const createApp = () => {
   });
 
   // sends index.html
-  app.use('*', (req, res) => {
-    res.sendFile(__dirname, '..', 'public/index.html');
-  });
+  // app.use('*', (req, res) => {
+  //   res.sendFile(__dirname, '..', 'public/index.html');
+  // });
 
   // error handling endware? 500
-  app.use((rerr, eq, res, next) => {
+  app.use((err, req, res, next) => {
     console.error(err);
     console.error(err.stack);
     res.status(err.status || 500).send(err.message || 'Internal server error');
   });
 };
 
-const startListenning = () => {
+const startListening = () => {
   const server = app.listen(PORT, () => {
     console.log(`Mixing it up on port ${PORT}`);
   });
@@ -102,10 +103,10 @@ const syncdb = () => db.sync();
 
 async function bootApp() {
   try {
-    await sessionStore.sync();
+    // await sessionStore.sync();
     await syncdb();
     await createApp();
-    await startListenning();
+    await startListening();
   } catch (err) {
     console.log(err);
   }
@@ -116,8 +117,9 @@ async function bootApp() {
 // It will evaluate false when this module is required by another module - for example,
 // if we wanted to require our app in a test spec
 
-if (require.main === module) {
-  bootApp();
-} else {
-  createApp();
-}
+// if (require.main === module) {
+//   bootApp();
+// } else {
+//   createApp();
+// }
+bootApp();
