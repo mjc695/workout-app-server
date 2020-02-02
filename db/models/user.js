@@ -23,7 +23,7 @@ const User = db.define('user', {
   salt: {
     type: Sequelize.STRING,
     get() {
-      return () => this.data.getDataValue('salt');
+      return () => this.getDataValue('salt');
     },
   },
 });
@@ -32,17 +32,17 @@ module.exports = User;
 
 // Instance methods
 
-User.prototype.correctPassword = function(candidatePwd) {
+User.prototype.correctPassword = function (candidatePwd) {
   return User.encryptPassword(candidatePwd, this.salt()) === this.password();
 };
 
 // Class methods
 
-User.generateSalt = function() {
+User.generateSalt = function () {
   return crypto.randomBytes(16).toString('base64');
 };
 
-User.encryptPassword = function(plainText, salt) {
+User.encryptPassword = function (plainText, salt) {
   return crypto
     .createHash('RSA-SHA256')
     .update(plainText)

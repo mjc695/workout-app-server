@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const { User } = require('../db/models')
 
+module.exports = router
 //logging in
 
 router.post('/login', async (req, res, next) => {
@@ -10,6 +11,7 @@ router.post('/login', async (req, res, next) => {
         email: req.body.email
       }
     })
+    console.log('IS IT CORRECT?:', user.correctPassword('hello'))
     if (!user) {
       res.status(401).send('The user does not exist')
     } else if (!user.correctPassword(req.body.password)) {
