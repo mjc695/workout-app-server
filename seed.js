@@ -3,14 +3,14 @@ const { green, red } = require('chalk');
 
 const { User, Exercise, Sets } = require('./db/models');
 
-const users = [
-  {
-    firstName: 'Monferd',
-    lastName: 'Collin',
-    email: 'monmon@email.com',
-    password: 123,
-  },
-];
+const users =
+{
+  email: 'monmon@email.com',
+  password: '123',
+  firstName: 'Monferd',
+  lastName: 'Collin',
+}
+  ;
 
 const exercises = [
   {
@@ -49,8 +49,7 @@ const workout = [
 
 const seed = async () => {
   await db.sync({ force: true });
-
-  await User.bulkCreate(users);
+  await User.create(users);
   await Exercise.bulkCreate(exercises);
   await Sets.bulkCreate(aSet);
   // await workout.bulkCreate(workout);
@@ -58,15 +57,30 @@ const seed = async () => {
   console.log(green('seeding Successfully completed!'));
   await db.close();
 };
-db.authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
-  });
-seed().catch(err => {
-  console.log(red('Oh no something went wrong :('));
-  console.error(err);
-  db.close();
-});
+// db.authenticate()
+//   .then(() => {
+//     console.log('Connection has been established successfully.');
+//   })
+//   .catch(err => {
+//     console.error('Unable to connect to the database:', err);
+//   });
+// seed().catch(err => {
+//   console.log(red('Oh no something went wrong :('));
+//   console.error(err);
+//   db.close();
+// });
+async function runseed() {
+  console.log('seeding...')
+  try {
+    await seed()
+    console.log('seeded one user')
+  } catch (err) {
+    console.error(err)
+  } finally {
+    console.log('closing db connection')
+    await db.close()
+    console.log('db connection closed')
+  }
+}
+
+runseed()

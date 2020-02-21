@@ -52,11 +52,14 @@ User.encryptPassword = function (plainText, salt) {
 // hooks
 
 const setSaltAndPassword = user => {
+  console.log('setting password?')
   if (user.changed('password')) {
+    console.log('i should be generating salt')
     user.salt = User.generateSalt();
     user.password = User.encryptPassword(user.password(), user.salt());
   }
 };
 
 User.beforeCreate(setSaltAndPassword);
+User.beforeBulkCreate(setSaltAndPassword);
 User.beforeUpdate(setSaltAndPassword);
