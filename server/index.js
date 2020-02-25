@@ -28,7 +28,7 @@ if (process.env.NODE_ENV === 'test') {
   after('close the session store', () => sessionStore.stopExpiringSessions);
 }
 
-if (process.env.NODE_ENV !== 'production') require('./secrets.js');
+if (process.env.NODE_ENV !== 'production') require('../secrets.js');
 
 //passport serialization
 passport.serializeUser((user, done) => done(null, user.id))
