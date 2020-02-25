@@ -5,11 +5,21 @@ const compression = require('compression');
 const volleyball = require('volleyball');
 const morgan = require('morgan'); //required on line 39
 const session = require('express-session');
-// const SequelizeStore = require('connect-session-sequelize')('session.Store');
-// const sessionstore = new SequelizeStore({ db });
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const sessionStore = new SequelizeStore({ db });
 const passport = require('passport')
 const PORT = process.env.PORT || 8080;
 const app = express();
+// BUILD FRONT END IN SAME FILE
+// BUILD FRONT END IN SAME FILE
+// BUILD FRONT END IN SAME FILE
+// BUILD FRONT END IN SAME FILE
+// BUILD FRONT END IN SAME FILE
+// BUILD FRONT END IN SAME FILE
+// BUILD FRONT END IN SAME FILE
+// BUILD FRONT END IN SAME FILE
+// BUILD FRONT END IN SAME FILE
+// BUILD FRONT END IN SAME FILE
 
 module.exports = app;
 
@@ -25,7 +35,7 @@ passport.serializeUser((user, done) => done(null, user.id))
 
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = await db.models.user.find({
+    const user = await db.models.user.findOne({
       where: {
         id: id
       }
@@ -52,15 +62,16 @@ const createApp = () => {
 
   app.use(compression());
 
-  // session middleware with passport
-  // app.use(
-  //   session({
-  //     secret: process.env.SESSION_SECRET || 'default',
-  //     store: session.store,
-  //     resave: false,
-  //     saveUninitialized: false,
-  //   })
-  // );
+  // session middleware with passport and express
+  app.use(
+    session({
+      secret: process.env.SESSION_SECRET || 'default',
+      store: sessionStore,
+      resave: false,
+      saveUninitialized: false,
+    })
+  );
+
   app.use(passport.initialize());
   app.use(passport.session());
 
@@ -107,7 +118,7 @@ const syncdb = () => db.sync();
 
 async function bootApp() {
   try {
-    // await sessionStore.sync();
+    await sessionStore.sync();
     await syncdb();
     await createApp();
     await startListening();

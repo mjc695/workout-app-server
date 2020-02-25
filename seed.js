@@ -1,7 +1,7 @@
-const db = require('./db/db');
+const db = require('./server/db/db');
 const { green, red } = require('chalk');
 
-const { User, Exercise, Sets } = require('./db/models');
+const { User, Exercise, Sets } = require('./server/db/models');
 
 const users =
 {

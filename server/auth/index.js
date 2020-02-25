@@ -29,15 +29,14 @@ router.post('/login', async (req, res, next) => {
 // logging out
 // waiting for passport to be put in
 
-// router.post('/logout', (req,res) =>{
-//   req.logout()
-//   req.session.destroy()
-//   res.redirect('/')
-// })
-
-
+router.post('/logout', (req, res) => {
+  req.logout()
+  req.session.destroy()
+  res.redirect('/')
+})
 
 // gettinng current user data (in cookies)
 router.get('/me', (req, res) => {
+  // console.log(req.user)
   res.json(req.user)
 })
