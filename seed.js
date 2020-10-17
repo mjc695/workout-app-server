@@ -3,7 +3,7 @@ const { green, red } = require('chalk');
 
 const { User, Exercise, Sets } = require('./server/db/models');
 
-const users =
+const user1 =
 {
   email: 'monmon@email.com',
   password: '123',
@@ -11,6 +11,12 @@ const users =
   lastName: 'Collin',
 }
   ;
+const user2 = {
+  email: 'M@email.com',
+  password: '123',
+  firstName: 'Monferd1',
+  lastName: 'Collin1'
+}
 
 const exercises = [
   {
@@ -49,7 +55,8 @@ const workout = [
 
 const seed = async () => {
   await db.sync({ force: true });
-  await User.create(users);
+  await User.create(user1);
+  await User.create(user2)
   await Exercise.bulkCreate(exercises);
   await Sets.bulkCreate(aSet);
   // await workout.bulkCreate(workout);
